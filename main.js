@@ -67,6 +67,8 @@ class Level {
   }
 }
 
+
+
 class State {
   constructor(level, actors, status) {
     this.level = level;
@@ -92,6 +94,114 @@ class State {
   }
 }
 
-let level1 = new Level(simpleLevelPlan);
 
-console.log("LEVEL 1: ", level1)
+
+class Vec {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+  }
+
+  /**
+   * @description represent the current position and state of a given moving element in our game.
+   * @param {integer} other
+   */
+  plus(other) {
+    return new Vec(this.x + other.x, this.y + other.y);
+  }
+
+  /**
+   * @description Scales a vector by a given number.
+   * @param {integer} factor
+   */
+  times(factor) {
+    return new Vec(this.x * factor, this.y * factor);
+  }
+}
+
+
+
+
+class Player {
+  constructor(pos, speed) {
+    this.pos = pos;
+    this.speed = speed;
+  }
+
+  get type() { return "player"; }
+
+  static create(pos) {
+    return new Player(pos.plus(new Vec(0, -0.5)), new Vec(0, 0));
+  }
+}
+
+Player.prototype.size = new Vec(0.8, 1.5);
+
+
+
+
+class Lava {
+  constructor(pos, speed, reset) {
+    this.pos = pos;
+    this.speed = speed;
+    this.reset = reset;
+  }
+
+  get type() { return "lava"; }
+
+  static create(pos, ch) {
+    if (ch == "=") {
+      return new Lava(pos, new Vec(2, 0));
+    } else if (ch == "|") {
+      return new Lava(pos, new Vec(0, 2));
+    } else if (ch == "v") {
+      return new Lava(pos, new Vec(0, 3), pos);
+    }
+  }
+}
+
+Lava.prototype.size = new Vec(1, 1);
+
+
+
+
+class Coin {
+  constructor(pos, basePos, wobble) {
+    this.pos = pos;
+    this.basePos = basePos;
+    this.wobble = wobble;
+  }
+
+  get type() { return "coin"; }
+
+  static create(pos) {
+    let basePos = pos.plus(new Vec(0.2, 0.1));
+    return new Coin(basePos, basePos,
+    Math.random() * Math.PI * 2);
+  }
+}
+
+Coin.prototype.size = new Vec(0.6, 0.6);
+
+const levelChars = {
+  ".": "empty",
+  "#": "wall",
+  "+": "lava",
+  "@": Player,
+  "o": Coin,
+  "=": Lava,
+  "|": Lava,
+  "v": Lava
+};
+
+let simpleLevel = new Level(simpleLevelPlan);
+console.log(`${simpleLevel.width} by ${simpleLevel.height}`);
+
+
+
+
+
+
+
+
+
+
