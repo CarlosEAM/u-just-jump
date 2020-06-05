@@ -368,6 +368,63 @@ Coin.prototype.collide = function(state) {
 
 
 
+// ACTOR UPDATES
+
+// This update method computes a new position by adding the product of the
+// time step and the current speed to its old position.
+Lava.prototype.update = function(time, state) {
+  let newPos = this.pos.plus(this.speed.times(time));
+  if (!state.level.touches(newPos, this.size, "wall")) {
+    return new Lava(newPos, this.speed, this.reset);
+  } else if (this.reset) {
+    return new Lava(this.reset, this.speed, this.reset);
+  } else {
+    return new Lava(this.pos, this.speed.times(-1));
+  }
+};
+
+
+
+// Coins use their update method to wobble. They ignore collisions with the
+// grid since they are simply wobbling around inside of their own square.
+const wobbleSpeed = 8, wobbleDist = 0.07;
+
+Coin.prototype.update = function(time) {
+  let wobble = this.wobble + time * wobbleSpeed;
+  let wobblePos = Math.sin(wobble) * wobbleDist;
+  return new Coin(this.basePos.plus(new Vec(0, wobblePos)), this.basePos, wobble);
+};
+
+
+
+// Player motion is handled separately per axis
+// because hitting the floor should not prevent horizontal motion, and hitting a
+// wall should not stop falling or jumping motion.
+const playerXSpeed = 7;
+const gravity = 30;
+const jumpSpeed = 17;
+
+Player.prototype.update = function(time, state, keys) {
+  let xSpeed = 0;
+  if (keys.ArrowLeft) xSpeed -= playerXSpeed;
+  if (keys.ArrowRight) xSpeed += playerXSpeed;
+  let pos = this.pos;
+  let movedX = pos.plus(new Vec(xSpeed * time, 0));
+  if (!state.level.touches(movedX, this.size, "wall")) {
+    pos = movedX;
+  }
+  let ySpeed = this.speed.y + time * gravity;
+  let movedY = pos.plus(new Vec(0, ySpeed * time));
+  if (!state.level.touches(movedY, this.size, "wall")) {
+    pos = movedY;
+  } else if (keys.ArrowUp && ySpeed > 0) {
+    ySpeed = -jumpSpeed;
+  } else {
+    ySpeed = 0;
+  }
+  return new Player(pos, new Vec(xSpeed, ySpeed));
+};
+
 
 
 
