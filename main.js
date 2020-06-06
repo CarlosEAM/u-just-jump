@@ -405,7 +405,7 @@ State.prototype.update = function(time, keys) {
 
   if (newState.status != "playing") return newState;
 
-  let player = newState.player;
+  let player = new State.player;
   if (this.level.touches(player.pos, player.size, "lava")) {
     return new State(this.level, actors, "lost");
   }
@@ -650,5 +650,3 @@ async function runGame(plans, Display) {
 
 // Start the game
 runGame(simpleLevelPlan, DOMDisplay);
-
-// TODO: FIND OUT WHY ITS CAUSING AN ERROR On the pos variable
