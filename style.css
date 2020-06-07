@@ -1,7 +1,94 @@
+/*GLOBAL STYLES*/
+body,
+header,
+ul,
+li,
+a,
+h1,
+h2 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+a:link {
+  color: #000;
+}
+
+a:visited {
+  color: #000;
+}
+
+a:hover {
+  color: red;
+}
+
+a:active {
+  color: yellow;
+}
+
+.page-container {
+  background: #f9aa4a;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100vh;
+}
+
+
+/*HEADER*/
+header {
+  align-items: center;
+  display: flex;
+  height: 12%;
+}
+
+.site-title {
+  flex-grow: 2;
+}
+
+.main-menu {
+  flex-grow: 1;
+}
+
+
+/*BODY*/
+main {
+  background: #333;
+  height: 80%;
+}
+
+.game-wrapper {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  height: calc(100% - 16px);
+  justify-content: center;
+  padding: 8px;
+}
+
+
+/*FOOTER*/
+
+footer {
+  height: 8%;
+}
+
+
+
+/*DRY pricipal*/
+header,
+main,
+footer {
+  text-align: center;
+}
+
+
+/*GAME*/
 .background{
   background: rgb(52, 166, 251);
-  table-layout: fixed;
   border-spacing: 0;
+  table-layout: fixed;
 }
 
 .background td {
@@ -38,8 +125,8 @@
 }
 
 .game {
+  max-height: 100%;
+  max-width: 100%;
   overflow: hidden;
-  max-width: 600px;
-  max-height: 450px;
   position: relative;
 }

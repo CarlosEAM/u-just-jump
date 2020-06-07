@@ -8,7 +8,8 @@ import {startGame} from './game-engine.js';
 const loadGame = () => {
   // query DOM for the game wrapper element to pass to the game engine
   let gameWrapper = document.querySelector('.game-wrapper');
-  startGame(gameWrapper)
+  console.log("GAME DOWN FOR MAINTANENCE")
+  // startGame(gameWrapper)
 }
 
 window.onload = loadGame;
