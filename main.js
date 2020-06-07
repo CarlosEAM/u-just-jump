@@ -28,8 +28,7 @@ const initModal = () => {
 const loadGame = () => {
   // query DOM for the game wrapper element to pass to the game engine
   let gameWrapper = document.querySelector('.game-wrapper');
-  console.log("GAME DOWN FOR MAINTANENCE")
-  // startGame(gameWrapper)
+  startGame(gameWrapper)
 }
 
 window.onload = () => {
