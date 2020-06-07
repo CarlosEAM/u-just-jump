@@ -1,6 +1,6 @@
 # U Just Jump
 
-Browser based game, where the player jumps around collecting coins avoiding obstacles and lava.
+Browser based game, where the player jumps around collecting coins while avoiding the lava.
 
 ## Getting Started
 
@@ -8,7 +8,9 @@ Here is what you need to start playing the game.
 
 ### Prerequisites
 
-- Download and install [Python3](https://www.python.org/downloads/) or if you have another way to run a local server use that.
+- Because we use ES6 modules and due to CORS policy the game can't be run directly from the file.
+
+- [Python3](https://www.python.org/downloads/) can be used to run a quick local server (see below) or you can use any other method you'd prefer.
 
 ### Setup
 
@@ -20,21 +22,23 @@ Here is what you need to start playing the game.
 
 `python3 -m http.server 8888`
 
-You can use any port number you like
+`8888` is just the port number I use but you can use any port number you like.
 
 ## How to Play
 
 - The game consists of:
   - **Lava** which kills the player, causing a level reset.
-  - **coins** all must be collected for the player to win.
+  - **coins** they must all be collected for the player to win.
 
-- Use the left and right arrow keys to **move**
+- Use the **left** and **right** *arrow keys* to **move**
 
-- Use the up arrow key to **jump**
+- Use the **up** *arrow key* to **jump**
 
 **NOTE:**
 
-Right now there is only 1 level, while I create other levels.
+Right now there is only 1 level available. I am currently designing a few more levels.
+
+If you have any levels you want to add please see [Contributing](#contributing).
 
 ## Built with
 
@@ -62,11 +66,11 @@ Use the following characters to create the map:
 - `.` full stops are black spaces
 - `@` player
 - `o` the letter o are the coins
-- Lava consists of 3 different characters depending on the desired effect:
+- Lava consists of 4 different characters depending on the desired effect:
   - `+` sitting still lava block
   - `=` moving back and forth horizontally in a loop
   - `|` moving up and down in a loop
-  - `v` dripping lava, once it hits the the floor it drips again
+  - `v` dripping lava, once it hits the the floor it starts falling again
 
 **Map Example**
 
