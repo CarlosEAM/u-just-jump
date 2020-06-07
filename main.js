@@ -3,6 +3,26 @@ import {startGame} from './game-engine.js';
 
 
 /**
+ * @description Initialise the how to play modal.
+ */
+const initModal = () => {
+  let modal = document.querySelector('#howToModal');
+  // Open modal
+  document.querySelector('#openModalBtn').addEventListener('click', () => {
+    modal.style.display = 'block';
+  });
+  // Close modal
+  document.querySelector('.close-modal-btn').addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+  // Close modal when user clicks outside of modal
+  window.addEventListener('click', (event) => {
+    if (event.target == modal) modal.style.display = 'none';
+  });
+}
+
+
+/**
  * @description Loads the game.
  */
 const loadGame = () => {
@@ -12,4 +32,7 @@ const loadGame = () => {
   // startGame(gameWrapper)
 }
 
-window.onload = loadGame;
+window.onload = () => {
+  initModal();
+  loadGame();
+}
