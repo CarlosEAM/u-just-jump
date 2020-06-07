@@ -1,3 +1,12 @@
+/*FONT*/
+@font-face {
+  font-family: "orbitron";
+  font-style: normal;
+  font-weight: normal;
+  src: url("fonts/Orbitron-Regular.ttf") format("truetype");
+}
+
+
 /*GLOBAL STYLES*/
 body,
 header,
@@ -13,25 +22,26 @@ h2 {
 }
 
 a:link {
-  color: #000;
+  color: #333;
 }
 
 a:visited {
-  color: #000;
+  color: #333;
 }
 
 a:hover {
-  color: red;
+  color: #097F43;
 }
 
 a:active {
-  color: yellow;
+  color: #fff;
 }
 
 .page-container {
-  background: #f9aa4a;
+  background: #fff1df;
   display: flex;
   flex-flow: column nowrap;
+  font-family: "orbitron";
   height: 100vh;
 }
 
@@ -44,11 +54,17 @@ header {
 }
 
 .site-title {
+  color: #097f43;
   flex-grow: 2;
 }
 
 .main-menu {
   flex-grow: 1;
+}
+
+.main-menu ul li a {
+  font-size: .9em;
+  animation: font .23s;
 }
 
 
@@ -71,6 +87,7 @@ main {
 /*FOOTER*/
 
 footer {
+  font-size: .8em;
   height: 8%;
 }
 
@@ -129,4 +146,48 @@ footer {
   max-width: 100%;
   overflow: hidden;
   position: relative;
+}
+
+
+/*HOW TO PLAY MODAL*/
+.ht-modal {
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,.6);
+  display: none;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 66;
+}
+
+.ht-modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  margin: 15% auto;
+  padding: 20px;
+  width: 80%;
+}
+
+.close-modal-btn {
+  color: lime;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-modal-btn:hover,
+.th-close-modal:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/*MEDIA QUERIES*/
+@media (min-width: 600px) {
+  .main-menu ul li a {
+    font-size: 1em;
+  }
 }
