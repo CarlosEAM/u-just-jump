@@ -1,6 +1,6 @@
-# U Just Jump
+# U Just Jump :video_game:
 
-Browser based game, where the player jumps around collecting coins while avoiding the lava.
+Browser based platform game, where the player runs and jumps around collecting coins while avoiding the lava.
 
 ## Getting Started
 
@@ -26,17 +26,17 @@ Here is what you need to start playing the game.
 
 ## How to Play
 
-- The game consists of:
-  - **Lava** which kills the player, causing a level reset.
-  - **coins** they must all be collected for the player to win.
+- The game has one simple goal: **collect all the coins**.
 
-- Use the **left** and **right** *arrow keys* to **move**
+- Make sure not to let the lava touch you or the level will restart.
 
-- Use the **up** *arrow key* to **jump**
+- Use the **left** :arrow_left: and **right** :arrow_right: *arrow keys* to **move**
+
+- Use the **up** :arrow_up: *arrow key* to **jump**
 
 **NOTE:**
 
-Right now there is only 1 level available. I am currently designing a few more levels.
+Right now there is only 1 level available. I am currently designing a few more levels. :smiley:
 
 If you have any levels you want to add please see [Contributing](#contributing).
 
@@ -94,6 +94,12 @@ const mapName = `
 .#####################..................
 ........................................`;
 ```
+
+## Notes
+
+- Currently the game does not support touch screen devices.
+
+- This version of the game uses the DOM to draw out the game, therefore it may not perform games console smooth.
 
 ## Authors
 
