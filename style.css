@@ -148,10 +148,12 @@ footer {
 }
 
 .game {
-  max-height: 100%;
-  max-width: 100%;
+  height: auto;
+  max-height: 438px;
+  max-width: 632px;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 
