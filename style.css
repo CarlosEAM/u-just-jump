@@ -39,10 +39,25 @@ a:active {
 
 .page-container {
   background: #fff1df;
+  color: #333;
   display: flex;
   flex-flow: column nowrap;
   font-family: "orbitron";
   height: 100vh;
+}
+
+
+/*DRY pricipal*/
+.text-center {
+  text-align: center;
+}
+
+.standout-words {
+  font-weight: 700;
+}
+
+.hr-rule{
+  margin-top: 64px;
 }
 
 
@@ -89,15 +104,6 @@ main {
 footer {
   font-size: .8em;
   height: 8%;
-}
-
-
-
-/*DRY pricipal*/
-header,
-main,
-footer {
-  text-align: center;
 }
 
 
@@ -151,8 +157,8 @@ footer {
 
 /*HOW TO PLAY MODAL*/
 .ht-modal {
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,.6);
+  background-color: rgb(9, 127, 67);
+  background-color: rgba(9, 127, 67,.6);
   display: none;
   height: 100%;
   left: 0;
@@ -164,17 +170,21 @@ footer {
 }
 
 .ht-modal-content {
-  background-color: #fefefe;
+  background-color: #fff1df;
   border: 1px solid #888;
-  margin: 15% auto;
-  padding: 20px;
-  width: 80%;
+  margin: 12% auto;
+  max-width: 572px;
+  padding: 20px 10px;
+  position: relative;
+  width: 88%;
 }
 
 .close-modal-btn {
-  color: lime;
   font-size: 28px;
   font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 12px;
 }
 
 .close-modal-btn:hover,
@@ -184,10 +194,31 @@ footer {
   cursor: pointer;
 }
 
+.ht-modal-body {
+  letter-spacing: 1px;
+  padding-top: 16px;
+}
+
+.ht-modal-body p {
+  margin: 28px 0;
+}
+
 
 /*MEDIA QUERIES*/
 @media (min-width: 600px) {
   .main-menu ul li a {
     font-size: 1em;
+  }
+}
+
+@media (min-width: 900px) {
+  .ht-modal-content {
+    margin: 10% auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .ht-modal-content {
+    margin: 6% auto;
   }
 }
