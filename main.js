@@ -1,9 +1,9 @@
 // load function from game engine to start game
-import {startGame} from './game-engine.js';
+import {loadGame} from './game-engine.js';
 
 
 /**
- * @description Initialise the how to play modal.
+ * @description Initialise MODAL how to play.
  */
 const initModal = () => {
   let modal = document.querySelector('#howToModal');
@@ -23,15 +23,36 @@ const initModal = () => {
 
 
 /**
- * @description Loads the game.
+ * @description Start game
+ * @param {object} gameWrapper - DOM element
+ * @param {object} startBtn - DOM element
  */
-const loadGame = () => {
-  // query DOM for the game wrapper element to pass to the game engine
-  let gameWrapper = document.querySelector('.game-wrapper');
-  startGame(gameWrapper)
+const startGame = (gameWrapper, startBtn) => {
+  // disable start button
+  startBtn.setAttribute('disabled', 'disabled');
+  loadGame(gameWrapper).then(() => {
+    // enable start button
+    startBtn.removeAttribute('disabled');
+  });
 }
+
+
+/**
+ * @description Initialize site settings
+ */
+const initSettings = () => {
+  // Get DOM elements outside Modules
+  const startBtn = document.querySelector('#startBtn');
+  let gameWrapper = document.querySelector('.game-wrapper');
+
+  // Listener for the start button
+  startBtn.addEventListener('click', () => {
+    startGame(gameWrapper, startBtn);
+  });
+}
+
 
 window.onload = () => {
   initModal();
-  loadGame();
+  initSettings();
 }

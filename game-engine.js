@@ -600,13 +600,30 @@ function runLevel(level, Display, gameWrapper) {
  * @param {object} gameWrapper - DOM element
  */
 async function runGame(plans, Display, gameWrapper) {
+
+  // Implement player lives
+  let lives = 3;
+  let won = false;
+  // Create infinite loop to play through the levels
   for (let level = 0; level < plans.length;) {
-    // promise resolves when game level is finished
-    let status = await runLevel(new Level(plans[level]), Display, gameWrapper);
-    // move to next level only if currentl level won
-    if (status == "won") level++;
+
+    // Check lives, ends or reloads game
+    if(lives > 0) {
+      console.log(`You have ${lives} left`);
+      won = await runLevel(new Level(plans[level]), Display, gameWrapper)
+        .then(status => (status == 'won') ? true : false);
+    }
+
+    // Update lives and current level
+    if (won) {
+      level++;
+      lives = 3;
+    } else {
+      lives--;
+    }
+
   }
-  console.log("You've won!");
+  return won;
 }
 
 
@@ -614,6 +631,6 @@ async function runGame(plans, Display, gameWrapper) {
  * @description Loads the game
  * @param {object} gameWrapper - DOM element queried from outside module
  */
-export function startGame(gameWrapper) {
-  runGame(GAME_LEVELS, DOMDisplay, gameWrapper);
+export function loadGame(gameWrapper) {
+  return runGame(GAME_LEVELS, DOMDisplay, gameWrapper);
 }
