@@ -528,10 +528,14 @@ function trackKeys(keys) {
   }
   window.addEventListener("keydown", track);
   window.addEventListener("keyup", track);
+
+  // Unregister handlers and methods
+  down.unregister = () => {
+    window.removeEventListener('keydown', track);
+    window.removeEventListener('keyup', track);
+  }
   return down;
 }
-
-const arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
 
 
 // RUNNING THE GAME
@@ -570,25 +574,57 @@ function runAnimation(frameFunc) {
  */
 function runLevel(level, Display, gameWrapper) {
   let display = new Display(gameWrapper, level);
-  // let display = new Display(document.querySelector('#game-wrapper'), level);
-  // let display = new Display(document.body, level);
   let state = State.start(level);
   let ending = 1;
+  // As suggested in EloquentJS, ther is a 'running' state
+  let running = 'yes';
+
   return new Promise(resolve => {
-    runAnimation(time => {
+
+    // check if game has been paused
+    function pauseHandler(event) {
+      if (event.key != 'p') return;
+      event.preventDefault()
+      // swap between running states;
+      if (running == 'no') {
+        running = 'yes';
+        runAnimation(frame);
+      } else if (running == 'yes') {
+        running = 'pausing';
+      } else {
+        running = 'yes';
+      }
+    }
+
+    // Add event handler to listen out for pause
+    window.addEventListener('keydown', pauseHandler);
+    let arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
+
+    function frame(time) {
+      // check game state
+      if (running == 'pausing') {
+        running = 'no';
+        return false;
+      }
+
+      // Run the game
       state = state.update(time, arrowKeys);
       display.syncState(state);
-      if (state.status == "playing") {
+      if (state.status == 'playing') {
         return true;
       } else if (ending > 0) {
         ending -= time;
         return true;
       } else {
+        // Game end, clear screen and remove events
         display.clear();
+        window.removeEventListener('keydown', pauseHandler);
+        arrowKeys.unregister();
         resolve(state.status);
         return false;
       }
-    });
+    }
+    runAnimation(frame);
   });
 }
 
