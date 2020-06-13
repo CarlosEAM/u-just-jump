@@ -1,6 +1,6 @@
 # U Just Jump :video_game:
 
-Browser based platform game, where the player runs and jumps around collecting coins while avoiding the lava.
+Browser based platform game, where the player runs and jumps around collecting coins while avoiding the lava and moving enemies.
 
 ## Getting Started
 
@@ -28,11 +28,15 @@ Here is what you need to start playing the game.
 
 - The game has one simple goal: **collect all the coins**.
 
-- Make sure not to let the lava touch you or the level will restart.
-
 - Use the **left** :arrow_left: and **right** :arrow_right: *arrow keys* to **move**
 
 - Use the **up** :arrow_up: *arrow key* to **jump**
+
+- Don't let the lava touch you or the level will restart.
+
+- Enemies will take a live and restart a level when they touch you.
+
+- Land on top of the enemy to destry them!
 
 **NOTE:**
 
@@ -65,6 +69,7 @@ Use the following characters to create the map:
 - `#` for walls and floors
 - `.` full stops are black spaces
 - `@` player
+- `*` enemy (horizontally moving)
 - `o` the letter o are the coins
 - Lava consists of 4 different characters depending on the desired effect:
   - `+` sitting still lava block
@@ -84,13 +89,13 @@ const mapName = `
 .#.o....=..############################.
 .###.........................v......o.#.
 .#....................................#.
-.#.o.o..............o...............o.#.
-.############++##+########......#######.
+.#.o.o.#............o...............o.#.
+.#..............................#######.
 .#..........######..................o.#.
 .#o.................................o.#.
 .##.......................#############.
-.#....o..........o.....o.#..............
-.#.@..##++++######+++####...............
+.#....o.........#..*...@.#..............
+.#....##++++#############...............
 .#####################..................
 ........................................`;
 ```
