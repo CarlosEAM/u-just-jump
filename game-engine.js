@@ -2,18 +2,6 @@
  * U Just Jump - Browser game
  */
 
-/* ==============
-# TODO: CREATE A MONSTER PLAYER
-1. Only move horiazontally - **COMPLETE**
-2. Chases the player, move in their direction
-3. Bounce back and forth with nay movement pattern **COMPLETE**
-4. Does not move through walls **COMPLETE**
-5. Touching a monster: (Players bottom near the monsters top?)
-  5.1. Player lands on top the monster dies
-  5.2. Player lands front or back, player dies.
-
-*/
-
 // Load the module with the game maps
 import {GAME_LEVELS} from './game-levels.js';
 
@@ -207,6 +195,7 @@ class Enemy {
     this.pos = pos;
     this.speed = speed;
     this.reset = reset;
+    this.alive = true;
   }
 
   // return player type
@@ -214,12 +203,12 @@ class Enemy {
 
   static create(pos) {
     // enemy larger than standard square so update its starting position
-    return new Enemy(pos.plus(new Vec(0, -0.5)), new Vec(2, 0));
+    return new Enemy(pos.plus(new Vec(0, -0.4)), new Vec(2, 0));
   }
 }
 
 // enemy same size as player
-Enemy.prototype.size = new Vec(0.8, 1.5);
+Enemy.prototype.size = new Vec(1.2, 1.4);
 
 
 // maps background elements to strings and
@@ -405,7 +394,6 @@ State.prototype.update = function(time, keys) {
   if (this.level.touches(player.pos, player.size, "lava")) {
     return new State(this.level, actors, "lost");
   }
-  // TODO: MAYBE ADD ENEMY TOUCH DETECTION HERE
 
   for (let actor of actors) {
     if (actor != player && overlap(actor, player)) {
@@ -419,10 +407,22 @@ State.prototype.update = function(time, keys) {
 /**
  * @description Detect overlap between actors
  * @param {object} actor1 - actor instace
- * @param {object} actor2 - actor instace
+ * @param {object} actor2 - player instace
  * @return {boolean}
  */
 function overlap(actor1, actor2) {
+  // TDO: CHECK MOSTER LOCATION AND PLAYER LOCATION
+  if (actor1.type == 'enemy') {
+    if ( (actor2.pos.y + actor2.size.y) < actor1.pos.y &&
+      actor1.pos.x + actor1.size.x > actor2.pos.x &&
+      actor1.pos.x < actor2.pos.x + actor2.size.x &&
+      (actor2.pos.y + actor2.size.y + 0.2) > actor1.pos.y ) {
+      // Monster was stepped on.
+      actor1.alive = false;
+      // valid overlap, return true
+      return true;
+    }
+  }
   return actor1.pos.x + actor1.size.x > actor2.pos.x &&
     actor1.pos.x < actor2.pos.x + actor2.size.x &&
     actor1.pos.y + actor1.size.y > actor2.pos.y &&
@@ -446,13 +446,31 @@ Lava.prototype.collide = function(state) {
  * @return {object}
  */
 Coin.prototype.collide = function(state) {
+  // remove the collected coin if any
   let filtered = state.actors.filter(a => a != this);
   let status = state.status;
+  // check for leftover coins
   if (!filtered.some(a => a.type == "coin")) status = "won";
   return new State(state.level, filtered, status);
 };
 
-// TODO: UPDATE THE PLAYER STATE ON COLLIDE WITH ENEMY
+
+/**
+ * @description Updates the Player state on Enemy collision
+ * @param {object} state - current game state
+ * @return {object}
+ */
+Enemy.prototype.collide = function(state) {
+  let status = state.status;
+  let actors = state.actors;
+  // remove monster actor or round lost
+  if (this.alive) {
+    status = 'lost';
+  } else {
+    actors = state.actors.filter(a => a != this);
+  }
+  return new State(state.level, actors, status);
+}
 
 
 // ACTOR UPDATES
@@ -487,7 +505,6 @@ Lava.prototype.update = function(time, state) {
  * @return {object}
  */
 Enemy.prototype.update = function(time, state) {
-  // console.log("UPDATING ENEMY")
   let newPos = this.pos.plus(this.speed.times(time));
   // Check for wall collisions
   if (!state.level.touches(newPos, this.size, 'wall')) {
