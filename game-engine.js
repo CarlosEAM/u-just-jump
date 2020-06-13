@@ -2,6 +2,18 @@
  * U Just Jump - Browser game
  */
 
+/* ==============
+# TODO: CREATE A MONSTER PLAYER
+1. Only move horiazontally - **COMPLETE**
+2. Chases the player, move in their direction
+3. Bounce back and forth with nay movement pattern **COMPLETE**
+4. Does not move through walls **COMPLETE**
+5. Touching a monster: (Players bottom near the monsters top?)
+  5.1. Player lands on top the monster dies
+  5.2. Player lands front or back, player dies.
+
+*/
+
 // Load the module with the game maps
 import {GAME_LEVELS} from './game-levels.js';
 
@@ -140,7 +152,7 @@ class Lava {
 
   get type() { return "lava"; }
 
-  // actor character type required to choose laval
+  // actor character type required to choose lava
   static create(pos, ch) {
     // Decide which type of lava to build
     if (ch == "=") {
@@ -184,6 +196,32 @@ class Coin {
 Coin.prototype.size = new Vec(0.6, 0.6);
 
 
+/**
+ * @description Create a enemy actor
+ * @param {object} pos - actors current location
+ * @param {object} basePos - base position
+ * @param {object} wobble - the wobble
+ */
+class Enemy {
+  constructor(pos, speed, reset) {
+    this.pos = pos;
+    this.speed = speed;
+    this.reset = reset;
+  }
+
+  // return player type
+  get type() { return "enemy"}
+
+  static create(pos) {
+    // enemy larger than standard square so update its starting position
+    return new Enemy(pos.plus(new Vec(0, -0.5)), new Vec(2, 0));
+  }
+}
+
+// enemy same size as player
+Enemy.prototype.size = new Vec(0.8, 1.5);
+
+
 // maps background elements to strings and
 // actor characters to classes.
 const levelChars = {
@@ -194,7 +232,8 @@ const levelChars = {
   "o": Coin,
   "=": Lava,
   "|": Lava,
-  "v": Lava
+  "v": Lava,
+  "*": Enemy
 };
 
 
@@ -328,9 +367,9 @@ DOMDisplay.prototype.scrollPlayerIntoView = function(state) {
 
 /**
  * @description Is rectangle touching a grid element of a given type
- * @param {object} pos - element position
- * @param {integer} size - size of element
- * @param {string} type - type of element
+ * @param {object} pos - player element position
+ * @param {integer} size - player element size
+ * @param {string} type - type of element, eg lava
  * @return {boolean}
  */
 Level.prototype.touches = function(pos, size, type) {
@@ -351,7 +390,7 @@ Level.prototype.touches = function(pos, size, type) {
 
 
 /**
- * @description Is rectangle touching a grid element of a given type
+ * @description Update a grid element of a given type
  * @param {integer} time - element position
  * @param {integer} keys - size of element
  * @return {object}
@@ -366,6 +405,7 @@ State.prototype.update = function(time, keys) {
   if (this.level.touches(player.pos, player.size, "lava")) {
     return new State(this.level, actors, "lost");
   }
+  // TODO: MAYBE ADD ENEMY TOUCH DETECTION HERE
 
   for (let actor of actors) {
     if (actor != player && overlap(actor, player)) {
@@ -412,6 +452,8 @@ Coin.prototype.collide = function(state) {
   return new State(state.level, filtered, status);
 };
 
+// TODO: UPDATE THE PLAYER STATE ON COLLIDE WITH ENEMY
+
 
 // ACTOR UPDATES
 
@@ -436,6 +478,24 @@ Lava.prototype.update = function(time, state) {
     return new Lava(this.pos, this.speed.times(-1));
   }
 };
+
+
+/**
+ * @description Computes a new position for Enemy actor
+ * @param {integer} time - time step
+ * @param {object} state - current game state
+ * @return {object}
+ */
+Enemy.prototype.update = function(time, state) {
+  // console.log("UPDATING ENEMY")
+  let newPos = this.pos.plus(this.speed.times(time));
+  // Check for wall collisions
+  if (!state.level.touches(newPos, this.size, 'wall')) {
+    return new Enemy(newPos, this.speed);
+  } else {
+    return new Enemy(newPos, this.speed.times(-1));
+  }
+}
 
 
 // Coin variable configuration

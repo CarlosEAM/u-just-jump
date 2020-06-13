@@ -156,6 +156,10 @@ footer {
   background: rgb(255, 100, 100);
 }
 
+.enemy {
+  background: purple;
+}
+
 .wall {
   background: white;
 }
